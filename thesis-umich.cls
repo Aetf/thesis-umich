@@ -682,22 +682,14 @@
 
 % This sets the formatting of the table of contents.
 \renewcommand*{\tableofcontents}{%
- % Move to new page.
- \newpage %
+ % Use front page styling.
+ \frntpg %
  % Add a pdf anchor.
  \phantomsection %
  % Add a bookmark manually for the table of contents.
  \pdfbookmark[0]{Table of Contents}{\thepage} %
- % Use front page styling.
- \frntpg %
- % Larger upper margin for first page of table
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf TABLE OF CONTENTS} %
- % Add some space after the title.
- \vspace{2ex} %
+ \chapter*{TABLE OF CONTENTS} %
  % Start the automatic table of contents features.
  \begin{singlespace} %
   \@starttoc{toc}\if@restonecol\twocolumn\fi %
@@ -834,25 +826,15 @@
 
 % This sets the formatting of the list of appendices page.
 \newcommand*{\listofappendices}{%
- % Move to new page.
- \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Appendices} %
- % Anchor for pdf
- \phantomsection %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF APPENDICES} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF APPENDICES}%
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Appendices} %
  % Start the automatic table of contents features.
  \begin{singlespace} %
-  \@starttoc{loa}\if@restonecol\twocolumn\fi %
+  \@starttoc{lap}\if@restonecol\twocolumn\fi %
  \end{singlespace} %
 }
 
@@ -887,7 +869,7 @@
  % Add a bookmark manually.
  \pdfbookmark[0]{#1}{#2} %
  % Add to the list of appendices rather than toc.
- \addcontentsline{loa}{chapter}{\protect\numberline{\thechapter}#1} %
+ \addcontentsline{lap}{chapter}{\protect\numberline{\thechapter}#1} %
  % Save the chapter number.
  \chaptermark{#1} %
  % Add extra space to the lists of figures and tables and maps.
@@ -1139,7 +1121,11 @@
 % titlesec unfortunately add some undocumented vertical length before chapter,
 % so we need to consider that when setting the length here
 \newlength{\@umich@chapter@beforesep}
-\setlength{\@umich@chapter@beforesep}{\dimexpr1in-1.5\baselineskip\relax}
+\setlength{\@umich@chapter@beforesep}{\dimexpr-1.5\baselineskip\relax}
+% Larger upper margin for first page of table (thesis only)
+\if@umich@thesis %
+   \setlength{\@umich@chapter@beforesep}{\dimexpr1in-1.5\baselineskip\relax}
+\fi
 
 \titlespacing{\chapter}
 {0pt} % increase the left margin
@@ -1192,7 +1178,6 @@
  \hypersetup{pdftitle={\inserttitle},pdfauthor={\insertauthor}}
  % Insert the frontispiece if there is one.
  \if@umich@frontispiece\frontispiecepage\fi %
-% \ifthenelse{\equal{\@frontispiece}{}}{}{\frontispiecepage} %
  % Page numbers at the bottom
  \pagestyle{plain} %
  % Use lower-case roman numerals.

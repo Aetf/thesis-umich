@@ -1133,34 +1133,28 @@
 
 
 %% ---- CHAPTER HEADINGS -----------------------------------------------
-
-% Change the chapter headings to uppercase.
-\renewcommand{\@chapapp}{CHAPTER}
-
-% Change the formatting of the first page of each chapter.
-\renewcommand{\@makechapterhead}[1]{%
- % Insert an extra top margin.
- \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- % Insert the text
- { %
-  % Ensure proper alignment.
-  \parindent 0pt \raggedright %
-  % Check for chapter overflow.
-  \ifnum \c@secnumdepth >\m@ne %
-   % CHAPTER and number
-   \centerline{\large\bf \@chapapp{} \thechapter} \par %
-   % Vertical space
-   \vskip 0.3in \fi %
-   % Insert the title of the chapter.
-   \begin{center} \large\bf #1 \end{center} %
-   % Vertical space after the title
-   \nobreak \vskip 0.3in %
- } %
-}
-
-%% ---- SECTION HEADINGS -----------------------------------------------
 \RequirePackage{titlesec}
 
+\renewcommand{\chaptername}{CHAPTER}
+
+\titleformat{\chapter}[display]
+{\normalfont\bfseries\large\filcenter} % format for label and text
+{\chaptertitlename{} \thechapter} % label
+{0.3in} % vertical space between label and text
+{} % code before label and text
+[] % code after label and text
+
+% titlesec unfortunately add some undocumented vertical length before chapter,
+% so we need to consider that when setting the length here
+\newlength{\@umich@chapter@beforesep}
+\setlength{\@umich@chapter@beforesep}{\dimexpr1in-1.5\baselineskip\relax}
+
+\titlespacing{\chapter}
+{0pt} % increase the left margin
+{\@umich@chapter@beforesep} % vertical space before the title
+{0.3in plus 0pt minus 0pt} % vertical space after the title
+
+%% ---- SECTION HEADINGS -----------------------------------------------
 \titleformat*{\section}{\center\bfseries}
 \titleformat*{\subsection}{\bfseries}
 \titleformat*{\subsubsection}{\bfseries}

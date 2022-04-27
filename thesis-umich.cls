@@ -1135,14 +1135,6 @@
 %% ---- CHAPTER HEADINGS -----------------------------------------------
 \RequirePackage{titlesec}
 
-\renewcommand{\chaptername}{CHAPTER}
-
-\titleformat{\chapter}[display]
-{\normalfont\bfseries\large\filcenter} % format for label and text
-{\chaptertitlename{} \thechapter} % label
-{0.3in} % vertical space between label and text
-{} % code before label and text
-[] % code after label and text
 
 % titlesec unfortunately add some undocumented vertical length before chapter,
 % so we need to consider that when setting the length here
@@ -1153,12 +1145,6 @@
 {0pt} % increase the left margin
 {\@umich@chapter@beforesep} % vertical space before the title
 {0.3in plus 0pt minus 0pt} % vertical space after the title
-
-%% ---- SECTION HEADINGS -----------------------------------------------
-\titleformat*{\section}{\center\bfseries}
-\titleformat*{\subsection}{\bfseries}
-\titleformat*{\subsubsection}{\bfseries}
-
 
 %% ---- LINKS ----------------------------------------------------------
 % This loads a package that allows extra colors for links.

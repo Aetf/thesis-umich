@@ -128,7 +128,7 @@
  \setlength{\columnsep}{0.3in}
 \else
  % Use the standard margins for the thesis version.
- \RequirePackage[margin=1in,left=1in, %
+ \RequirePackage[margin=1in, %
   headheight=0.5\baselineskip]{geometry}
 \fi
 
@@ -409,37 +409,160 @@
 
 % Command to insert front page matter with styles
 \newcommand{\insertfront}[4]{ %
-  \begin{minipage}{0.8\textwidth} \vspace{0.9in} \end{minipage} %
-  %\edef\outsideindent{\the\parindent}% store parindent value
-  % Center on the page.
-  % \begin{center} %
-   % Make a minipage.
-   % @Zhan: The minipage environment is not working welll with 
-   % multiple-page texts. Hence, I removed the minipage environment.
-   % Feel free to uncomment the following line if you think it is useful
-   %\begin{minipage}{#4\textwidth} % 
-    % \setlength{\parindent}{\outsideindent}
+  % Set the page formatting.
+  \frntpg %
+  % adjust textwidth as requested
+  \newgeometry{margin=1in,textwidth=#4\textwidth}
+  % Check the value of the style.
+  \ifthenelse{\equal{#2}{1}}{ %
+    % Style 1: plain text
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+        \onehalfspacing %
+      \fi %
+      % Insert the text.
+      \sloppy #1 %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{2}}{ %
+    % Style 2: simple bold italic heading
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+        \onehalfspacing %
+      \fi %
+      % Heading
+      \begin{center}\textbf{\textit{#3}}\end{center} %
+      % Insert the text.
+      \sloppy #1 %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{3}}{ %
+    % Style 3: Spread caps heading
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+        \onehalfspacing %
+      \fi %
+      % Heading
+      \begin{center} \textbf{\uppercase{\an{#3}}} \end{center} %
+      % Insert the text.
+      \sloppy #1 %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{4}}{ %
+    % Style 4: lined
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Line above
+      \rule[1.4ex]{\textwidth}{1pt} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+        \onehalfspacing %
+      \fi %
+      % Insert the text.
+      \sloppy #1 \\ %
+      % Line below
+      \rule{\textwidth}{1pt} %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{5}}{ %
+    % Style 5: bold italic heading with lines
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Heading
+      \begin{center} \textbf{\textit{#3}} \end{center} %
+      % Move up a bit.
+      \ \\[-4ex] %
+      % Line above
+      \rule[1.4ex]{\textwidth}{1pt} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+       \onehalfspacing %
+      \fi %
+      % Insert the text.
+      \sloppy #1 \\ %
+      % Line below
+      \rule{\textwidth}{1pt} %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{6}}{ %
+    % Style 6: lined with spread caps header
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+      % Heading
+      \begin{center} \textbf{\uppercase{\an{#3}}} \end{center} %
+      % Move up a bit.
+      \ \\[-4ex] %
+      % Line above
+      \rule[1.4ex]{\textwidth}{1pt} %
+      % Required to use 1.5-spacing for dissertation.
+      \if@umich@thesis %
+        \onehalfspacing %
+      \fi %
+      % Insert the text.
+      \sloppy #1 \\ %
+      % Line below
+      \rule{\textwidth}{1pt} %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{2}} %
+  }{\ifthenelse{\equal{#2}{7}}{ %
+    % Style 7: heading follow chapter heading, no support for width
     % Required to use 1.5-spacing for dissertation.
     \if@umich@thesis %
-     \onehalfspacing %
+      \onehalfspacing %
     \fi %
-    % Check the value of the style.
-    \ifthenelse{\equal{#2}{2}}{ %
-     % Style 2: simple bold italic heading
-     % Larger upper margin for first page of front matter
-     \begin{center}\textbf{\textit{#3}}\end{center} %
-    }{ %
-    \ifthenelse{\equal{#2}{3}}{ %
-     % Style 3: Spread caps heading
-    % Larger upper margin for first page of front matter
-       % Heading
-       \begin{center} \textbf{\uppercase{#3}} \end{center} %
-    }{}    % Insert the text.
-    }
-
-    #1 %
-  %   \end{minipage} %
-  %\end{center} %
+    % Heading
+    \chapter*{#3}
+    % Insert the text.
+    \sloppy #1 %
+  }{ %
+    % Default style: centered
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+    % Center on the page.
+    \begin{center} %
+    % Make a minipage.
+    \begin{minipage}{0.7\textwidth} %
+      % Insert the text.
+      \begin{center} \sloppy #1 \end{center} %
+    \end{minipage} %
+    \end{center} %
+    % Vertical rubber space
+    \vspace*{\stretch{1}} %
+  } % else 7
+  } % else 6
+  } % else 5
+  } % else 4
+  } % else 3
+  } % else 2
+  } % else 1
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{#3}
+  % restore previous geometry
+  \restoregeometry
 }
 
 %% ---- COMMANDS TO HIDE/SHOW FRONT PAGES ------------------------------
@@ -479,10 +602,6 @@
 
 % Command for page with the dedication
 \newcommand*{\dedicationpage}{ %
- % Set the page formatting.
- \frntpg %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Dedication}
  % Insert the text and formatting.
  \insertfront{\@dedication %
   }{\@dedicationstyle}{Dedication}{\@dedication@width}
@@ -518,10 +637,6 @@
 
 % Command for page with the acknowledgments
 \newcommand*{\acknowledgmentspage}{ %
- % Set the page formatting.
- \frntpg %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Acknowledgments}
  % Insert the text and formatting.
  \insertfront{\@acknowledgments %
   }{\@acknowledgmentsstyle}{Acknowledgments}{\@acknowledgments@width}
@@ -557,10 +672,6 @@
 
 % Command for page with the preface
 \newcommand*{\prefacepage}{ %
- % Set the page formatting.
- \frntpg %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Preface}
  % Insert the text and formatting.
  \insertfront{\@preface %
   }{\@prefacestyle}{Preface}{\@preface@width}
@@ -596,10 +707,6 @@
 
 % Command for page with the foreword
 \newcommand*{\forewordpage}{ %
- % Set the page formatting.
- \frntpg %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Foreword}
  % Insert the text and formatting.
  \insertfront{\@foreword %
   }{\@forewordstyle}{Foreword}{\@foreword@width}
@@ -635,10 +742,6 @@
 
 % Command for page with the prologue
 \newcommand*{\prologuepage}{ %
- % Set the page formatting.
- \frntpg %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Prologue}
  % Insert the text and formatting.
  \insertfront{\@prologue %
   }{\@prologuestyle}{Prologue}{\@prologue@width}
@@ -684,9 +787,7 @@
 \renewcommand*{\tableofcontents}{%
  % Use front page styling.
  \frntpg %
- % Add a pdf anchor.
- \phantomsection %
- % Add a bookmark manually for the table of contents.
+ % Add a bookmark manually for the table of contents (that will NOT appear in TOC)
  \pdfbookmark[0]{Table of Contents}{\thepage} %
  % Add the title
  \chapter*{TABLE OF CONTENTS} %
@@ -705,16 +806,12 @@
 \renewcommand*{\listoffigures}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Figures} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF FIGURES}
+ \chapter*{LIST OF FIGURES}
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Figures} %
  % Add some space after the title.
  \vspace{2em} %
  \ \\
@@ -734,19 +831,12 @@
 \renewcommand*{\listoftables}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Tables} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF TABLES} %
- % Add some space after the title.
- \vspace{2em} %
- \ \\
+ \chapter*{LIST OF TABLES} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Tables} %
  % Start the automatic table of contents features.
  \noindent TABLE
  \begin{singlespace} %
@@ -768,18 +858,12 @@
 \newcommand*{\listofmaps}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Maps} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF MAPS} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF MAPS} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Maps} %
  % Start the automatic table of contents features.
  \begin{singlespace} %
   \@starttoc{lom}\if@restonecol\twocolumn\fi %
@@ -800,18 +884,12 @@
 \newcommand*{\listofillustrations}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Illustrations} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF ILLUSTRATIONS} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF ILLUSTRATIONS} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Illustrations} %
  % Start the automatic table of contents features.
  \begin{singlespace} %
   \@starttoc{loi}\if@restonecol\twocolumn\fi %
@@ -905,18 +983,12 @@
 \newcommand*{\listofabbreviations}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Abbreviations} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF ABBREVIATIONS} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF ABBREVIATIONS} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Abbreviations} %
  % Start the automatic abbreviations feature.
  \begin{singlespace} %
   \begin{acronym} %
@@ -944,18 +1016,12 @@
 \newcommand*{\listofacronyms}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Acronyms} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF ACRONYMS} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF ACRONYMS} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Acronyms} %
  % Start the automatic abbreviations feature.
  \begin{singlespace} %
   \begin{acronym} %
@@ -983,18 +1049,12 @@
 \newcommand*{\listofsymbols}{%
  % Move to new page.
  \newpage %
- % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{List of Symbols} %
  % Use front page styling.
  \frntpg %
- % Larger upper margin for first page of table (thesis only)
- \if@umich@thesis %
-  \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \fi %
  % Add the title
- \centerline{\large\bf LIST OF SYMBOLS} %
- % Add some space after the title.
- \vspace{1ex} %
+ \chapter*{LIST OF SYMBOLS} %
+ % Add this page to the table of contents.
+ \addcontentsline{toc}{chapter}{List of Symbols} %
  % Start the automatic symbols feature.
  \begin{singlespace} %
   \begin{acronym} %
@@ -1039,24 +1099,14 @@
  \else %
   \thispagestyle{empty} %
  \fi %
+ % the title area: heading only
+ \chapter*{ABSTRACT}
  % Add this page to the table of contents.
- \phantomsection\addcontentsline{toc}{chapter}{Abstract} %
- % Extra vertical space
- \begin{minipage}{0.8\textwidth} \vspace{0.9in} \end{minipage} %
- % Center the title area.
- \begin{center} %
-  % Formatting
-  \bfseries
-  % Add the heading.
-  ABSTRACT \\ \vspace{5ex} %
-  % Add the title of the dissertation.
-  \normalsize %
- \end{center} %
-
-  % Use 1.5 spacing
-  \onehalfspacing %
-   % Insert the text.
-   \insertabstract %
+ \addcontentsline{toc}{chapter}{Abstract} %
+ % Use 1.5 spacing
+ \onehalfspacing %
+ % Insert the text.
+ \insertabstract %
  % Vertical rubber space
  \vspace*{\stretch{1}} %
 }
@@ -1089,7 +1139,6 @@
  \@tex@bibliography{#1} %
 }
 
-% FIXME: follow a similar approach as above and redefine the printbibliography command
 % Create a new command for printing the bibliography with biblatex
 \newcommand*{\bibsection}{ %
  % Update the page format.
@@ -1102,15 +1151,15 @@
  \fi %
  % Move to new page.
  \clearpage %
- % Create a pdf anchor.
- \phantomsection %
- % Add to table of contents.
- \addcontentsline{toc}{chapter}{Bibliography} %
- % FIXME: why print our own heading?
- \begin{minipage}{0.8\textwidth} \vspace{1in} \end{minipage} \\ %
- \center{\bfseries BIBLIOGRAPHY}
- % Load the bibliography.
- \printbibliography[heading=none] %
+ \defbibheading{thesisumich}[BIBLIOGRAPHY]{%
+   % heading
+   \chapter*{##1}%
+   % mark in running headings
+   \markboth{##1}{##1}%
+   % Add to table of contents.
+   \addcontentsline{toc}{chapter}{Bibliography} %
+ }
+ \printbibliography[heading=thesisumich]{} %
 }
 
 

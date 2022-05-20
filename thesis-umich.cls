@@ -416,6 +416,8 @@
   % Check the value of the style.
   \ifthenelse{\equal{#2}{1}}{ %
     % Style 1: plain text
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -431,6 +433,8 @@
     \vspace*{\stretch{2}} %
   }{\ifthenelse{\equal{#2}{2}}{ %
     % Style 2: simple bold italic heading
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -448,6 +452,8 @@
     \vspace*{\stretch{2}} %
   }{\ifthenelse{\equal{#2}{3}}{ %
     % Style 3: Spread caps heading
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -465,6 +471,8 @@
     \vspace*{\stretch{2}} %
   }{\ifthenelse{\equal{#2}{4}}{ %
     % Style 4: lined
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -484,6 +492,8 @@
     \vspace*{\stretch{2}} %
   }{\ifthenelse{\equal{#2}{5}}{ %
     % Style 5: bold italic heading with lines
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -507,6 +517,8 @@
     \vspace*{\stretch{2}} %
   }{\ifthenelse{\equal{#2}{6}}{ %
     % Style 6: lined with spread caps header
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.
@@ -540,6 +552,8 @@
     \sloppy #1 %
   }{ %
     % Default style: centered
+    % make sure link to the correct page
+    \phantomsection
     % Vertical rubber space
     \vspace*{\stretch{1}} %
     % Center on the page.

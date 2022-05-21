@@ -799,16 +799,20 @@
 
 % This sets the formatting of the table of contents.
 \renewcommand*{\tableofcontents}{%
- % Use front page styling.
- \frntpg %
- % Add a bookmark manually for the table of contents (that will NOT appear in TOC)
- \pdfbookmark[0]{Table of Contents}{\thepage} %
- % Add the title
- \chapter*{TABLE OF CONTENTS} %
- % Start the automatic table of contents features.
- \begin{singlespace} %
-  \@starttoc{toc}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Use front page styling.
+  \frntpg %
+  % Add a bookmark manually for the table of contents (that will NOT appear in TOC)
+  \pdfbookmark[0]{Table of Contents}{\thepage} %
+  % Add the title
+  \chapter*{TABLE OF CONTENTS} %
+  % Start the automatic table of contents features.
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \@starttoc{toc}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -818,22 +822,26 @@
 
 % This sets the formatting of the list of figures page.
 \renewcommand*{\listoffigures}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF FIGURES}
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Figures} %
- % Add some space after the title.
- \vspace{2em} %
- \ \\
- % Start the automatic table of contents features.
- \noindent FIGURE
- \begin{singlespace} %
-  \@starttoc{lof}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF FIGURES}
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Figures} %
+  % Add some space after the title.
+  \vspace{2em} %
+  \ \\
+  % Start the automatic table of contents features.
+  \noindent FIGURE
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \@starttoc{lof}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -843,19 +851,23 @@
 
 % This sets the formatting of the list of tables page.
 \renewcommand*{\listoftables}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF TABLES} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Tables} %
- % Start the automatic table of contents features.
- \noindent TABLE
- \begin{singlespace} %
-  \@starttoc{lot}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF TABLES} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Tables} %
+  % Start the automatic table of contents features.
+  \noindent TABLE
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \@starttoc{lot}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -870,18 +882,22 @@
 
 % This sets the formatting of the list of maps page.
 \newcommand*{\listofmaps}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF MAPS} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Maps} %
- % Start the automatic table of contents features.
- \begin{singlespace} %
-  \@starttoc{lom}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF MAPS} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Maps} %
+  % Start the automatic table of contents features.
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \@starttoc{lom}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -896,18 +912,22 @@
 
 % This sets the formatting of the list of maps page.
 \newcommand*{\listofillustrations}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF ILLUSTRATIONS} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Illustrations} %
- % Start the automatic table of contents features.
- \begin{singlespace} %
-  \@starttoc{loi}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF ILLUSTRATIONS} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Illustrations} %
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    % Start the automatic table of contents features.
+    \begin{singlespace} %
+      \@starttoc{loi}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -918,16 +938,20 @@
 
 % This sets the formatting of the list of appendices page.
 \newcommand*{\listofappendices}{%
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF APPENDICES}%
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Appendices} %
- % Start the automatic table of contents features.
- \begin{singlespace} %
-  \@starttoc{lap}\if@restonecol\twocolumn\fi %
- \end{singlespace} %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF APPENDICES}%
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Appendices} %
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    % Start the automatic table of contents features.
+    \begin{singlespace} %
+     \@starttoc{lap}\if@restonecol\twocolumn\fi %
+    \end{singlespace} %
+  \endgroup
 }
 
 % Renew the command that starts the appendices.
@@ -995,20 +1019,24 @@
 
 % This sets the formatting of the list of tables page.
 \newcommand*{\listofabbreviations}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF ABBREVIATIONS} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Abbreviations} %
- % Start the automatic abbreviations feature.
- \begin{singlespace} %
-  \begin{acronym} %
-   \@abbrevs %
-  \end{acronym} %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF ABBREVIATIONS} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Abbreviations} %
+  % Start the automatic abbreviations feature.
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \begin{acronym} %
+        \@abbrevs %
+      \end{acronym} %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -1028,20 +1056,24 @@
 
 % This sets the formatting of the list of acronyms page.
 \newcommand*{\listofacronyms}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF ACRONYMS} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Acronyms} %
- % Start the automatic abbreviations feature.
- \begin{singlespace} %
-  \begin{acronym} %
-   \@acronyms %
-  \end{acronym} %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF ACRONYMS} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Acronyms} %
+  % Start the automatic abbreviations feature.
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \begin{acronym} %
+        \@acronyms %
+      \end{acronym} %
+    \end{singlespace} %
+  \endgroup
 }
 
 
@@ -1061,20 +1093,24 @@
 
 % This sets the formatting of the list of tables page.
 \newcommand*{\listofsymbols}{%
- % Move to new page.
- \newpage %
- % Use front page styling.
- \frntpg %
- % Add the title
- \chapter*{LIST OF SYMBOLS} %
- % Add this page to the table of contents.
- \addcontentsline{toc}{chapter}{List of Symbols} %
- % Start the automatic symbols feature.
- \begin{singlespace} %
-  \begin{acronym} %
-   \@symbols %
-  \end{acronym} %
- \end{singlespace} %
+  % Move to new page.
+  \newpage %
+  % Use front page styling.
+  \frntpg %
+  % Add the title
+  \chapter*{LIST OF SYMBOLS} %
+  % Add this page to the table of contents.
+  \addcontentsline{toc}{chapter}{List of Symbols} %
+  % Start the automatic symbols feature.
+  \begingroup
+    % hide links so they look pretty when there are lots of them
+    \hypersetup{hidelinks}
+    \begin{singlespace} %
+      \begin{acronym} %
+        \@symbols %
+      \end{acronym} %
+    \end{singlespace} %
+  \endgroup
 }
 
 

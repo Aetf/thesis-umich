@@ -191,8 +191,6 @@
 % subtle corrections to white space that make the document much easier to read
 \RequirePackage{microtype}
 
-%% ---- Package Tweaks -----------------------------------------------
-
 %% ---- FORMATTING -----------------------------------------------------
 % Set the page style to fancy.
 \pagestyle{fancy}
@@ -1286,6 +1284,21 @@
     }%
   }
 \fi
+
+%% ---- Tweaks -------------------------------------------------
+% Fix acronym compatibility with cleveref, if they are loaded at the same time
+% \acreset from acronym needs to reset labels, but cleveref defines additional
+% labels that acronym doesn't reset, causing "label multiply defined" warnings.
+% See https://tex.stackexchange.com/a/71368.
+% Our fix here is simpler than the one answered in the stack exchange site.
+% We simply make sure \AC@undonewlabel resets both labels if cleveref is present.
+\AtEndPreamble{
+  \@ifpackageloaded{cleveref}{
+    \newcommand*{\org@undonewlabel}{}
+    \let\org@undonewlabel\AC@undonewlabel
+    \renewcommand*{\AC@undonewlabel}[1]{\org@undonewlabel{#1@cref}\org@undonewlabel{#1}}
+  }{}
+}
 
 %% ---- INITIALIZATION -------------------------------------------------
 % Commands to be placed after \begin{document}

@@ -552,7 +552,7 @@
       \onehalfspacing %
     \fi %
     % Heading
-    \chapter*{#3}
+    \chapter*{\MakeUppercase{#3}}
     % Insert the text.
     \sloppy #1 %
   }{ %
@@ -835,9 +835,6 @@
   \chapter*{LIST OF FIGURES}
   % Add this page to the table of contents.
   \addcontentsline{toc}{chapter}{List of Figures} %
-  % Add some space after the title.
-  \vspace{2em} %
-  \ \\
   % Start the automatic table of contents features.
   \noindent FIGURE
   \begingroup
@@ -1206,13 +1203,13 @@
  \fi %
  % Move to new page.
  \clearpage %
- \defbibheading{thesisumich}[BIBLIOGRAPHY]{%
+ \defbibheading{thesisumich}{%
    % heading
-   \chapter*{##1}%
+   \chapter*{\MakeUppercase{##1}}%
    % mark in running headings
    \markboth{##1}{##1}%
    % Add to table of contents.
-   \addcontentsline{toc}{chapter}{Bibliography} %
+   \addcontentsline{toc}{chapter}{##1} %
  }
  \printbibliography[heading=thesisumich]{} %
 }

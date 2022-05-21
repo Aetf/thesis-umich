@@ -84,6 +84,7 @@
 \newif\if@umich@prologue
 \newif\if@umich@foreword
 \newif\if@umich@abstract
+\newif\if@umich@coloracro
 
 % Set the default value of some of the options to true.
 \@umich@thesistrue
@@ -99,6 +100,8 @@
 % Declare an option for bibliography backrefs.
 \DeclareOption{backref}{\@umich@backreftrue}
 
+% Declare an option for enabling link colors for acronyms.
+\DeclareOption{coloracro}{\@umich@coloracrotrue}
 
 % This passes any other options on to the 'report' class.
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}%
@@ -188,6 +191,7 @@
 % subtle corrections to white space that make the document much easier to read
 \RequirePackage{microtype}
 
+%% ---- Package Tweaks -----------------------------------------------
 
 %% ---- FORMATTING -----------------------------------------------------
 % Set the page style to fancy.
@@ -1270,6 +1274,18 @@
  }
 \fi
 
+\if@umich@coloracro
+\else
+  % hide link color for acronyms by redefining the hyperlink command used by acronym
+  \AfterEndPreamble{%
+    \renewcommand*{\AC@hyperlink}[2]{%
+      \begingroup
+        \hypersetup{hidelinks}%
+        \hyperlink{#1}{#2}%
+      \endgroup
+    }%
+  }
+\fi
 
 %% ---- INITIALIZATION -------------------------------------------------
 % Commands to be placed after \begin{document}

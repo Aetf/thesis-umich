@@ -135,6 +135,9 @@
   headheight=0.5\baselineskip]{geometry}
 \fi
 
+% This is used to set line spacing for captions
+\RequirePackage[font={singlespacing}]{caption}
+
 % This loads the required math packages.
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}

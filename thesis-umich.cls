@@ -161,6 +161,9 @@
 % This package allows conditional testing of variables.
 \RequirePackage{ifthen}
 
+% This package provides various commands useful for class writing
+\RequirePackage{etoolbox}
+
 % This package is used for silly letter spacing
 \RequirePackage{soul}
 
@@ -1270,7 +1273,7 @@
 
 %% ---- INITIALIZATION -------------------------------------------------
 % Commands to be placed after \begin{document}
-\AtBeginDocument{ %
+\AfterEndPreamble{ %
  % Insert a title page.
  \titlepage %
  % Change the PDF title.

@@ -70,6 +70,7 @@
 \newif\if@umich@report
 \newif\if@umich@listoffigures
 \newif\if@umich@listoftables
+\newif\if@umich@listofalgorithms
 \newif\if@umich@listofmaps
 \newif\if@umich@listofillustrations
 \newif\if@umich@listofappendices
@@ -775,6 +776,7 @@
 \newcommand{\showlistoffigures}{\@umich@listoffigurestrue}
 \newcommand{\showlistoftables}{\@umich@listoftablestrue}
 \newcommand{\showlistofmaps}{\@umich@listofmapstrue}
+\newcommand{\showlistofalgorithms}{\@umich@listofalgorithmstrue}
 \newcommand{\showlistofillustrations}{\@umich@listofillustrationstrue}
 \newcommand{\showlistofappendices}{\@umich@listofappendicestrue}
 \newcommand{\showlistofabbreviations}{\@umich@listofabbrevstrue}
@@ -823,58 +825,62 @@
   \endgroup
 }
 
+%% ---- List of Things ------------------------------------------------
+% a common command to create list of things
+% #1: optional content between heading and list
+% #2: name
+% #3: name plural
+% #4: title
+% #5: content
+\newcommand*{\newlistofthings}[5][]{%
+  % This sets the formatting for the various entry types.
+  % \providecommand*\csname l@#2\endcsname{}
+  \@namedef{l@#2}{\@dottedtocline{1}{0em}{2.5em}}
+
+  % This sets the formatting of the list of figures page.
+  % \providecommand*\csname listof#3\endcsname{}
+  \@namedef{listof#3}{%
+    % Move to new page.
+    \newpage %
+    % Use front page styling.
+    \frntpg %
+    % Add the title
+    \chapter*{\MakeUppercase{#4}}
+    % Add this page to the table of contents.
+    \addcontentsline{toc}{chapter}{#4} %
+    % Start the automatic table of contents features.
+    \ifthenelse{\equal{#1}{}}{}{%
+      \noindent #1
+    }
+    \begingroup
+      % hide links so they look pretty when there are lots of them
+      \hypersetup{hidelinks}
+      \begin{singlespace} %
+        #5 %
+      \end{singlespace} %
+    \endgroup
+  }
+}
 
 %% ---- LIST OF FIGURES ------------------------------------------------
-% This sets the formatting for the various entry types.
-\renewcommand*{\l@figure}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of figures page.
-\renewcommand*{\listoffigures}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF FIGURES}
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Figures} %
-  % Start the automatic table of contents features.
-  \noindent FIGURE
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \@starttoc{lof}\if@restonecol\twocolumn\fi %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings[FIGURE]{figure}{figures}{List of Figures}{%
+  \@starttoc{lof}\if@restonecol\twocolumn\fi %
 }
-
 
 %% ---- LIST OF TABLES -------------------------------------------------
-% This sets the format for the table entries.
-\renewcommand*{\l@table}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of tables page.
-\renewcommand*{\listoftables}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF TABLES} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Tables} %
-  % Start the automatic table of contents features.
-  \noindent TABLE
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \@starttoc{lot}\if@restonecol\twocolumn\fi %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings[TABLE]{table}{tables}{List of Tables}{%
+  \@starttoc{lot}\if@restonecol\twocolumn\fi %
 }
 
+%% ---- LIST OF ALGORITHMS ------------------------------------------------
+% This needs to be done at the very end of preamble, after loading all packages,
+% because algorithm2e unconditionally defines l@algocf and listofalgorithms
+% which will clash with ours.
+\AtEndPreamble{%
+  \newlistofthings[ALGORITHM]{algocf}{algorithms}{List of Algorithms}{%
+    \@starttoc{loa}\if@restonecol\twocolumn\fi %
+  }
+}
 
 %% ---- LIST OF MAPS ---------------------------------------------------
 % Command to generate the 'map' environment.
@@ -882,29 +888,9 @@
 % Use a capitalized version for the captions.
 \floatname{map}{Map}
 
-% This sets the formatting for map entries in the list of maps.
-\newcommand*{\l@map}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of maps page.
-\newcommand*{\listofmaps}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF MAPS} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Maps} %
-  % Start the automatic table of contents features.
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \@starttoc{lom}\if@restonecol\twocolumn\fi %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{map}{maps}{List of Maps}{%
+  \@starttoc{lom}\if@restonecol\twocolumn\fi %
 }
-
 
 %% ---- LIST OF ILLUSTRATIONS ------------------------------------------
 % Command to generate the 'illustration' environment.
@@ -912,51 +898,13 @@
 % Use a capitalized version for the captions.
 \floatname{illustration}{Illustration}
 
-% This sets the formatting for map entries in the list of maps.
-\newcommand*{\l@illustration}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of maps page.
-\newcommand*{\listofillustrations}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF ILLUSTRATIONS} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Illustrations} %
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    % Start the automatic table of contents features.
-    \begin{singlespace} %
-      \@starttoc{loi}\if@restonecol\twocolumn\fi %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{illustration}{illustrations}{List of Illustrations}{%
+  \@starttoc{loi}\if@restonecol\twocolumn\fi %
 }
 
-
-
 %% ---- LIST OF APPENDICES ---------------------------------------------
-% This sets the formatting for appendices in the list.
-\newcommand*{\l@appendix}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of appendices page.
-\newcommand*{\listofappendices}{%
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF APPENDICES}%
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Appendices} %
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    % Start the automatic table of contents features.
-    \begin{singlespace} %
-     \@starttoc{lap}\if@restonecol\twocolumn\fi %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{appendix}{appendices}{List of Appendices}{%
+  \@starttoc{lap}\if@restonecol\twocolumn\fi %
 }
 
 % Renew the command that starts the appendices.
@@ -996,9 +944,10 @@
  % Add extra space to the lists of figures and tables and maps.
  \addtocontents{lof}{\protect\addvspace{8pt}} %
  \addtocontents{lot}{\protect\addvspace{8pt}} %
- \addtocontents{lom}{\protect\addvspace{8pt}} %
- \addtocontents{lop}{\protect\addvspace{8pt}} %
- \addtocontents{loi}{\protect\addvspace{8pt}} %
+ \addtocontents{loa}{\protect\addvspace{8pt}} %
+ % and all other currently defined custom floats
+ \float@addtolists{\protect\addvspace{8pt}}%
+
  % Produce the appropriate headings for the first page.
  \if@twocolumn %
   \@topnewpage[\@makechapterhead{#2}] %
@@ -1019,31 +968,11 @@
  % Redefine the list.
  \renewcommand{\@abbrevs}{#1}}
 
-% This sets the formatting for the abbreviations.
-\newcommand*{\l@abbreviation}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of tables page.
-\newcommand*{\listofabbreviations}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF ABBREVIATIONS} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Abbreviations} %
-  % Start the automatic abbreviations feature.
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \begin{acronym} %
-        \@abbrevs %
-      \end{acronym} %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{abbreviation}{abbreviations}{List of Abbreviations}{%
+  \begin{acronym} %
+    \@abbrevs %
+  \end{acronym} %
 }
-
 
 %% ---- LIST OF ACRONYMS -----------------------------------------------
 % Variable holding the contents of the abbreviations.
@@ -1056,31 +985,11 @@
  % Redefine the list.
  \renewcommand{\@acronyms}{#1}}
 
-% This sets the formatting for the abbreviations.
-\newcommand*{\l@acronym}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of acronyms page.
-\newcommand*{\listofacronyms}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF ACRONYMS} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Acronyms} %
-  % Start the automatic abbreviations feature.
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \begin{acronym} %
-        \@acronyms %
-      \end{acronym} %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{acronym}{acronyms}{List of Acronyms}{%
+  \begin{acronym} %
+    \@acronyms %
+  \end{acronym} %
 }
-
 
 %% ---- LIST OF SYMBOLS ------------------------------------------------
 % Variable holding the contents of the symbols.
@@ -1093,31 +1002,11 @@
  % Redefine the list.
  \renewcommand{\@symbols}{#1}}
 
-% This sets the formatting for the abbreviations.
-\newcommand*{\l@symbol}{\@dottedtocline{1}{0em}{2.5em}}
-
-% This sets the formatting of the list of tables page.
-\newcommand*{\listofsymbols}{%
-  % Move to new page.
-  \newpage %
-  % Use front page styling.
-  \frntpg %
-  % Add the title
-  \chapter*{LIST OF SYMBOLS} %
-  % Add this page to the table of contents.
-  \addcontentsline{toc}{chapter}{List of Symbols} %
-  % Start the automatic symbols feature.
-  \begingroup
-    % hide links so they look pretty when there are lots of them
-    \hypersetup{hidelinks}
-    \begin{singlespace} %
-      \begin{acronym} %
-        \@symbols %
-      \end{acronym} %
-    \end{singlespace} %
-  \endgroup
+\newlistofthings{symbol}{symbols}{List of Symbols}{%
+  \begin{acronym} %
+    \@symbols %
+  \end{acronym} %
 }
-
 
 %% ---- ABSTRACT -------------------------------------------------------
 % Command to hold the text of the abstract.
@@ -1333,6 +1222,8 @@
  \if@umich@listoffigures\listoffigures\fi %
  % Insert the list of tables.
  \if@umich@listoftables\listoftables\fi %
+ % Insert the list of algorithms.
+ \if@umich@listofalgorithms\listofalgorithms\fi %
  % Insert the list of maps.
  \if@umich@listofmaps\listofmaps\fi %
  % Insert the list of illustrations.

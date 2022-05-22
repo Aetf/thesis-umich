@@ -960,16 +960,19 @@
 %% ---- LIST OF ABBREVIATIONS ------------------------------------------
 % Variable holding the contents of the abbreviations.
 \newcommand{\@abbrevs}{}
+\newcommand{\@abbrevs@longest}{}
 
 % Command to set the abbreviations.
-\newcommand{\abbreviations}[1]{ %
+\newcommand{\abbreviations}[2][]{ %
  % Show the list of abbreviations.
  \@umich@listofabbrevstrue %
  % Redefine the list.
- \renewcommand{\@abbrevs}{#1}}
+ \renewcommand{\@abbrevs}{#2}%
+ \renewcommand{\@abbrevs@longest}{#1}%
+}
 
 \newlistofthings{abbreviation}{abbreviations}{List of Abbreviations}{%
-  \begin{acronym} %
+  \begin{acronym}[\@abbrevs@longest] %
     \@abbrevs %
   \end{acronym} %
 }
@@ -977,16 +980,19 @@
 %% ---- LIST OF ACRONYMS -----------------------------------------------
 % Variable holding the contents of the abbreviations.
 \newcommand{\@acronyms}{}
+\newcommand{\@acronyms@longest}{}
 
 % Command to set the abbreviations.
-\newcommand{\acronyms}[1]{ %
+\newcommand{\acronyms}[2]{ %
  % Show the list of abbreviations.
  \@umich@listofacronymstrue %
  % Redefine the list.
- \renewcommand{\@acronyms}{#1}}
+ \renewcommand{\@acronyms}{#2}%
+ \renewcommand{\@acronyms@longest}{#1}%
+}
 
 \newlistofthings{acronym}{acronyms}{List of Acronyms}{%
-  \begin{acronym} %
+  \begin{acronym}[\@acronyms@longest] %
     \@acronyms %
   \end{acronym} %
 }
@@ -994,16 +1000,19 @@
 %% ---- LIST OF SYMBOLS ------------------------------------------------
 % Variable holding the contents of the symbols.
 \newcommand{\@symbols}{}
+\newcommand{\@symbols@longest}{}
 
 % Command to set the symbols.
-\newcommand{\symbols}[1]{ %
+\newcommand{\symbols}[2]{ %
  % Show the list of symbols.
  \@umich@listofsymbolstrue %
  % Redefine the list.
- \renewcommand{\@symbols}{#1}}
+ \renewcommand{\@symbols}{#2}%
+ \renewcommand{\@symbols@longest}{#1}%
+}
 
 \newlistofthings{symbol}{symbols}{List of Symbols}{%
-  \begin{acronym} %
+  \begin{acronym}[\@symbols@longest] %
     \@symbols %
   \end{acronym} %
 }

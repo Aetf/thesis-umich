@@ -136,6 +136,10 @@
   headheight=0.5\baselineskip]{geometry}
 \fi
 
+% This is an alternative implementation of sectioning commands,
+% that provides more feature than LaTex builtin ones.
+\RequirePackage{titlesec}
+
 % This is used to set line spacing for captions
 \RequirePackage[font={singlespacing}]{caption}
 
@@ -903,59 +907,53 @@
 }
 
 %% ---- LIST OF APPENDICES ---------------------------------------------
+\newcounter{@umich@org@tocdepth}
 \newlistofthings{appendix}{appendices}{List of Appendices}{%
+  % Show only to section level in list of appendices
+  \setcounter{@umich@org@tocdepth}{\value{tocdepth}}%
+  \setcounter{tocdepth}{2}%
   \@starttoc{lap}\if@restonecol\twocolumn\fi %
+  \setcounter{tocdepth}{\value{@umich@org@tocdepth}}%
 }
 
-% Renew the command that starts the appendices.
-\renewcommand{\appendix}{ %
- % Move to new page.
- \clearpage %
- % Renew the counters.
- \renewcommand*{\thechapter}{\Alph{chapter}} %
- % Start over the chapter counter.
- \setcounter{chapter}{0} %
- % Add a pdf anchor.
- \phantomsection %
- % Add the page to the table of contents.
- \addcontentsline{toc}{chapter}{Appendices}
- % Stop adding sections to the table of contents.
- \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} %
- % Header for appendices.
- \renewcommand{\@chapapp}{APPENDIX} %
- % Renew the chapter and section labels.
- \let\@chapter\@chapter@appendix %
-}
+%% ---- \appendix command ---------------------------------------------
+% Header name
+\renewcommand{\appendixname}{APPENDIX}
 
-% Make a special chapter command for appendices.
-\def\@chapter@appendix[#1]#2{ %
- % Increase the chapter letter.
- \refstepcounter{chapter} %
- % Print a line to the .log file.
- \typeout{\@chapapp\space\thechapter.} %
- % Hopefully this works.
- \phantomsection %
- % Add a bookmark manually.
- \pdfbookmark[0]{#1}{#2} %
- % Add to the list of appendices rather than toc.
- \addcontentsline{lap}{chapter}{\protect\numberline{\thechapter}#1} %
- % Save the chapter number.
- \chaptermark{#1} %
- % Add extra space to the lists of figures and tables and maps.
- \addtocontents{lof}{\protect\addvspace{8pt}} %
- \addtocontents{lot}{\protect\addvspace{8pt}} %
- \addtocontents{loa}{\protect\addvspace{8pt}} %
- % and all other currently defined custom floats
- \float@addtolists{\protect\addvspace{8pt}}%
+% Facilities to switch toc output target, so we can change to lap after \appendix.
+% Do the patching immediately here before hyperref and other packages to modify these commands too much
+\newcommand{\@umich@sectioning@ext}{toc}
 
- % Produce the appropriate headings for the first page.
- \if@twocolumn %
-  \@topnewpage[\@makechapterhead{#2}] %
- \else %
-  \@makechapterhead{#2} %
-  \@afterheading %
- \fi }
+% For \chapter, directly change \@chapter, which titlesec doesn't touch.
+\patchcmd{\@chapter}
+{\addcontentsline{toc}} % search
+{\addcontentsline{\@umich@sectioning@ext}} % replace
+{}{}
 
+% For section and below, the following is titlesec specific.
+\patchcmd{\ttl@addcontentsline}
+{\addcontentsline{toc}} % search
+{\addcontentsline{\@umich@sectioning@ext}} % replace
+{}{}
+
+% Also specially for \chapter, we add some vertical space to all our currently defined custom floats,
+% in addition to lot/lof that is already handled in \@chapter.
+% Note that loa would be handled by algorithm2e.
+\pretocmd{\@chapter}{ %
+  \addtocontents{lap}{\protect\addvspace{10\p@}} %
+  \float@addtolists{\protect\addvspace{10\p@}} %
+}{}{}
+
+% Enhance \appendix, which resets counter and changes \thechapter to \Alph
+\pretocmd{\appendix}{ %
+  % Move to new page.
+  \clearpage %
+  % Add the page to the table of contents.
+  \phantomsection %
+  \addcontentsline{toc}{chapter}{Appendices} %
+  % Redirect writing toc to lap
+  \renewcommand{\@umich@sectioning@ext}{lap} %
+}{}{}
 
 %% ---- LIST OF ABBREVIATIONS ------------------------------------------
 % Variable holding the contents of the abbreviations.
@@ -1117,9 +1115,6 @@
 
 
 %% ---- CHAPTER HEADINGS -----------------------------------------------
-\RequirePackage{titlesec}
-
-
 % titlesec unfortunately add some undocumented vertical length before chapter,
 % so we need to consider that when setting the length here
 \newlength{\@umich@chapter@beforesep}
